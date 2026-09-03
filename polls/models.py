@@ -20,6 +20,11 @@ class Question(models.Model):
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
 
+    @property
+    def total_votes(self):
+        return sum(choice.votes for choice in self.choice_set.all())
+
+
 class Choice(models.Model):
     question = models.ForeignKey(
         Question,
@@ -30,3 +35,10 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+    @property
+    def vote_percentage(self):
+        total = self.question.total_votes
+        if total > 0:
+            return round((self.votes / total) * 100, 1)
+        return 0

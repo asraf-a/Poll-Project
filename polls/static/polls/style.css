@@ -1,7 +1,889 @@
-li a {
-    color: green;
+/* ==========================================================================
+   PollPulse - Modern Design System
+   ========================================================================== */
+
+:root {
+    --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    
+    /* Color Palette */
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-active: #3730a3;
+    --primary-light: #eef2ff;
+    --primary-glow: rgba(79, 70, 229, 0.25);
+    
+    --accent: #8b5cf6;
+    --accent-light: #f5f3ff;
+    --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --gradient-card-glow: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-text: #047857;
+    
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --danger-text: #b91c1c;
+    --danger-border: #fecaca;
+    
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-surface: #f1f5f9;
+    --border-color: #e2e8f0;
+    --border-hover: #cbd5e1;
+    
+    /* Shadows */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    
+    /* Radii */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   CSS Reset & Base
+   ========================================================================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-    background: white url("images/download.jpg") ;
+    min-height: 100vh;
+    font-family: var(--font-main);
+    color: var(--text-main);
+    background-color: var(--bg-body);
+    background-image: none !important;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+/* Accessible focus outline */
+:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+}
+
+.header-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+}
+
+.brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    background: var(--gradient-primary);
+    color: #ffffff;
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.brand-text {
+    font-weight: 800;
+}
+
+.brand-accent {
+    color: var(--primary);
+}
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.nav-link:hover {
+    color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+.admin-pill {
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+.admin-pill:hover {
+    border-color: var(--border-hover);
+    background-color: #ffffff;
+    color: var(--text-main);
+}
+
+/* ==========================================================================
+   Main Content Layout
+   ========================================================================== */
+.main-content {
+    flex: 1;
+    padding: 2.5rem 1.5rem 4rem;
+}
+
+.content-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero-section {
+    text-align: center;
+    padding: 1.5rem 1rem 2.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-full);
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(79, 70, 229, 0.15);
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--success);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--text-main);
+    margin-bottom: 0.85rem;
+}
+
+.hero-subtitle {
+    font-size: 1.0625rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   Polls Grid & Cards
+   ========================================================================== */
+.polls-header-meta {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.count-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-color);
+}
+
+.polls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.poll-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.poll-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.poll-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(79, 70, 229, 0.3);
+}
+
+.poll-card:hover::before {
+    opacity: 1;
+}
+
+.poll-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+}
+
+.poll-category-pill {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-sm);
+}
+
+.recent-pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--success-text);
+    background: var(--success-light);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-full);
+}
+
+.poll-card-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 1.25rem;
+}
+
+.poll-link-title {
+    color: var(--text-main);
+    display: block;
+    transition: color var(--transition-fast);
+}
+
+.poll-card:hover .poll-link-title {
+    color: var(--primary);
+}
+
+.poll-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.poll-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-main);
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    line-height: 1.2;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+
+.btn-primary:hover {
+    opacity: 0.94;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px var(--primary-glow);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+}
+
+.btn-ghost {
+    background-color: var(--bg-surface);
+    color: var(--text-main) !important;
+    border-color: var(--border-color);
+}
+
+.btn-ghost:hover {
+    background-color: #ffffff;
+    border-color: var(--border-hover);
+    color: var(--primary) !important;
+}
+
+.btn-sm {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8125rem;
+    border-radius: var(--radius-sm);
+}
+
+.btn-lg {
+    padding: 0.85rem 1.75rem;
+    font-size: 1rem;
+    border-radius: var(--radius-md);
+}
+
+/* ==========================================================================
+   Navigation Back
+   ========================================================================== */
+.navigation-back {
+    margin-bottom: 1.5rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-fast);
+}
+
+.back-link:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: #ffffff;
+}
+
+/* ==========================================================================
+   Detail / Voting View
+   ========================================================================== */
+.poll-detail-container,
+.poll-results-container {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.poll-detail-card,
+.poll-results-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 2.25rem 2rem;
+    box-shadow: var(--shadow-lg);
+}
+
+.detail-badge-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.detail-date {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+}
+
+.poll-detail-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+
+.poll-instruction {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    margin-bottom: 1.75rem;
+}
+
+.voting-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.choices-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.choice-option {
+    position: relative;
+}
+
+.choice-radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.choice-label {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 1.25rem;
+    background: #ffffff;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    user-select: none;
+}
+
+.choice-label:hover {
+    border-color: var(--primary);
+    background-color: #fafafa;
+    transform: translateX(3px);
+}
+
+.choice-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    flex: 1;
+}
+
+/* Custom Radio Dot */
+.custom-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--border-hover);
+    background: #ffffff;
+    position: relative;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+.choice-radio:checked + .choice-label {
+    border-color: var(--primary);
+    background-color: var(--accent-light);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.choice-radio:checked + .choice-label .choice-text {
+    color: var(--primary);
+}
+
+.choice-radio:checked + .choice-label .custom-radio {
+    border-color: var(--primary);
+    background: var(--primary);
+}
+
+.choice-radio:checked + .choice-label .custom-radio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Alerts & Notifications
+   ========================================================================== */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+}
+
+.alert-danger {
+    background: var(--danger-light);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
+}
+
+.alert-icon {
+    flex-shrink: 0;
+    color: var(--danger);
+}
+
+/* ==========================================================================
+   Results View
+   ========================================================================== */
+.results-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.results-meta-pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+}
+
+.total-votes-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--bg-surface);
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-full);
+}
+
+.results-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.25;
+    margin-bottom: 0.35rem;
+}
+
+.results-subtitle {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+}
+
+.results-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2.25rem;
+}
+
+.result-item {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.15rem 1.25rem;
+    box-shadow: var(--shadow-xs);
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.result-item:hover {
+    border-color: var(--border-hover);
+    transform: translateX(2px);
+}
+
+.result-info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    gap: 1rem;
+}
+
+.result-choice-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.result-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.result-vote-count {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.result-percentage {
+    font-size: 0.9375rem;
+    font-weight: 800;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-sm);
+}
+
+.progress-track {
+    width: 100%;
+    height: 10px;
+    background-color: var(--bg-surface);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-full);
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.results-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* ==========================================================================
+   Empty State Card
+   ========================================================================== */
+.empty-state-card {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 3.5rem 2rem;
+    text-align: center;
+    max-width: 500px;
+    margin: 2rem auto 0;
+}
+
+.empty-state-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+.empty-state-heading {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state-description {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.no-choices-notice {
+    padding: 1.5rem;
+    text-align: center;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer {
+    margin-top: auto;
+    background: #ffffff;
+    border-top: 1px solid var(--border-color);
+    padding: 1.75rem 1.5rem;
+    text-align: center;
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.footer-text {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+}
+
+.footer-text strong {
+    color: var(--text-main);
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .poll-detail-card,
+    .poll-results-card {
+        padding: 1.5rem 1.25rem;
+    }
+    
+    .poll-detail-title,
+    .results-title {
+        font-size: 1.45rem;
+    }
+    
+    .form-actions,
+    .results-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn {
+        width: 100%;
+    }
 }

@@ -1,14 +1,74 @@
-<form action="{% url 'polls:vote' question.id %}" method="post">
-{% csrf_token %}
-<fieldset>
-    <legend><h1>{{ question.question_text }}</h1></legend>
-    {% if error_message %}
-        <p><strong>{{ error_message }}</strong></p>
-    {% endif %}
-    {% for choice in question.choice_set.all %}
-        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-    {% endfor %}
-</fieldset>
-<input type="submit" value="Vote">
-</form>
+{% extends "polls/base.html" %}
+{% load static %}
+
+{% block title %}{{ question.question_text }} | PollPulse{% endblock %}
+
+{% block content %}
+<div class="poll-detail-container">
+    <div class="navigation-back">
+        <a href="{% url 'polls:index' %}" class="back-link" id="back-to-polls-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to all polls
+        </a>
+    </div>
+
+    <div class="poll-detail-card">
+        <div class="detail-badge-row">
+            <span class="poll-category-pill">Topic #{{ question.id }}</span>
+            <span class="detail-date">{{ question.pub_date|date:"F j, Y" }}</span>
+        </div>
+
+        <h1 class="poll-detail-title">{{ question.question_text }}</h1>
+        <p class="poll-instruction">Select one option below and submit your vote.</p>
+
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert" id="vote-error-banner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="alert-icon">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span><strong>{{ error_message }}</strong></span>
+            </div>
+        {% endif %}
+
+        <form action="{% url 'polls:vote' question.id %}" method="post" class="voting-form" id="poll-vote-form">
+            {% csrf_token %}
+            <fieldset class="voting-fieldset">
+                <legend class="sr-only">{{ question.question_text }}</legend>
+
+                <div class="choices-list">
+                    {% for choice in question.choice_set.all %}
+                        <div class="choice-option">
+                            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" class="choice-radio" required>
+                            <label for="choice{{ forloop.counter }}" class="choice-label">
+                                <span class="custom-radio"></span>
+                                <span class="choice-text">{{ choice.choice_text }}</span>
+                            </label>
+                        </div>
+                    {% empty %}
+                        <p class="no-choices-notice">There are currently no options configured for this question.</p>
+                    {% endfor %}
+                </div>
+            </fieldset>
+
+            {% if question.choice_set.all %}
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-lg" id="submit-vote-btn">
+                        <span>Cast My Vote</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </button>
+                    <a href="{% url 'polls:results' question.id %}" class="btn btn-ghost" id="view-results-link">
+                        View Live Results
+                    </a>
+                </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}

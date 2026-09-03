@@ -1,12 +1,88 @@
+{% extends "polls/base.html" %}
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'polls/style.css' %}">
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available here</p>          
-{% endif %}                                                
+{% block title %}Explore Polls | PollPulse{% endblock %}
+
+{% block content %}
+<div class="polls-index-container">
+    <section class="hero-section">
+        <div class="hero-badge">
+            <span class="pulse-dot"></span> Real-time Community Polling
+        </div>
+        <h1 class="hero-title">Discover &amp; Vote on Trending Topics</h1>
+        <p class="hero-subtitle">Make your voice heard. Cast your vote, explore live consensus, and participate in active community debates.</p>
+    </section>
+
+    {% if latest_question_list %}
+        <div class="polls-header-meta">
+            <h2 class="section-title">
+                Active Polls
+                <span class="count-badge">{{ latest_question_list|length }} available</span>
+            </h2>
+        </div>
+
+        <div class="polls-grid">
+            {% for question in latest_question_list %}
+                <article class="poll-card">
+                    <div class="poll-card-top">
+                        <span class="poll-category-pill">Topic #{{ question.id }}</span>
+                        {% if question.was_published_recently %}
+                            <span class="recent-pill">New</span>
+                        {% endif %}
+                    </div>
+
+                    <h3 class="poll-card-title">
+                        <a href="{% url 'polls:detail' question.id %}" class="poll-link-title" id="poll-question-{{ question.id }}">
+                            {{ question.question_text }}
+                        </a>
+                    </h3>
+
+                    <div class="poll-card-meta">
+                        <span class="meta-item" title="Published date">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            {{ question.pub_date|date:"M d, Y" }}
+                        </span>
+                        <span class="meta-item" title="Available choices">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20h9"></path>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                            </svg>
+                            {{ question.choice_set.count }} option{{ question.choice_set.count|pluralize }}
+                        </span>
+                    </div>
+
+                    <div class="poll-card-actions">
+                        <a href="{% url 'polls:detail' question.id %}" class="btn btn-primary btn-sm" id="vote-btn-{{ question.id }}">
+                            Vote Now
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                        <a href="{% url 'polls:results' question.id %}" class="btn btn-ghost btn-sm" id="results-btn-{{ question.id }}">
+                            Results
+                        </a>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state-card">
+            <div class="empty-state-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+            </div>
+            <h3 class="empty-state-heading">No polls are available.</h3>
+            <p class="empty-state-description">Check back soon! New questions and community polls will appear here as soon as they are published.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
